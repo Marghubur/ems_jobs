@@ -1,4 +1,4 @@
-package com.bot.jobs.jobs;
+package com.bot.jobs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
