@@ -1,0 +1,25 @@
+server:
+  port: 8085
+
+spring:
+  profiles:
+    active: ${profile:prod}
+  application:
+    name: project-service
+
+  cloud:
+    kubernetes:
+      discovery:
+        all-namespaces: true
+
+---
+
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss

@@ -1,0 +1,14 @@
+env:
+  folder: local-environment
+
+spring:
+  config:
+    #    activate:
+    #      on-profile: default
+    import: optional:configserver:http://localhost:8083
+
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8080/eureka
