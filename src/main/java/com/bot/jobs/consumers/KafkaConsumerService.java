@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class KafkaConsumerService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumerService.class);
-    @KafkaListener(topics = "daily-jobs-manager", groupId = "myGroup")
+    // @KafkaListener(topics = "daily-jobs-manager", groupId = "myGroup")
     public void consumer(CommonKafkaPayload payload) {
         LOGGER.info(String.format("Message received: %s", payload.getServiceName()));
     }
