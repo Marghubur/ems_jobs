@@ -26,6 +26,14 @@ public class Jobs {
     private Date jobEndDate;
     @JsonProperty("JobTime")
     private int jobTime;
+    @JsonProperty("JobDayOfWeek")
+    private int jobDayOfWeek;
+    @JsonProperty("JobDayOfMonth")
+    private int jobDayOfMonth;
+    @JsonProperty("JobMonthOfYear")
+    private int jobMonthOfYear;
+    @JsonProperty("JobOccurrenceType")
+    private int jobOccurrenceType;
     @JsonProperty("TopicName")
     private String topicName;
     @JsonProperty("GroupId")

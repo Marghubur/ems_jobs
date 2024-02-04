@@ -68,6 +68,7 @@ public class DailyScheduledJob {
         jobs.forEach(x -> {
             CommonKafkaPayload payload = new CommonKafkaPayload();
             payload.setServiceName(x.getJobTypeName().toUpperCase());
+            payload.setMessage(x.getJobsDetail());
             kafkaProducerService.sendMessage(payload);
         });
     }
