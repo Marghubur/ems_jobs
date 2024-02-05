@@ -20,7 +20,7 @@ public class KafkaProducerService {
     }
 
     public void sendMessage(CommonKafkaPayload payload) {
-        LOGGER.info(String.format("Message send: %s", payload.getServiceName()));
+        LOGGER.info(String.format("Message send: %s", payload.toString()));
 
         payload.setServiceName(payload.getServiceName().toUpperCase());
 
