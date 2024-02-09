@@ -1,6 +1,5 @@
 package com.bot.jobs.services;
 
-import com.bot.jobs.models.DatabaseConfiguration;
 import com.bot.jobs.models.Jobs;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
