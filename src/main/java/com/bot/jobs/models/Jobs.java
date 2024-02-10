@@ -24,9 +24,6 @@ public class Jobs {
     @JsonProperty("IsActiveJob")
     @Column(name = "IsActiveJob")
     private boolean isActiveJob;
-    @JsonProperty("IsConcurrentJob")
-    @Column(name = "IsConcurrentJob")
-    private boolean isConcurrentJob;
     @JsonProperty("JobStartDate")
     @Column(name = "JobStartDate")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
