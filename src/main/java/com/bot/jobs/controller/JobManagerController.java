@@ -2,6 +2,7 @@ package com.bot.jobs.controller;
 
 import com.bot.jobs.models.ApiResponse;
 import com.bot.jobs.models.CommonKafkaPayload;
+import com.bot.jobs.models.Jobs;
 import com.bot.jobs.producers.KafkaProducerService;
 import com.bot.jobs.serviceinterface.IManageJobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,15 @@ public class JobManagerController {
         return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 
-    @GetMapping("getAllJobs/{jobsId}")
-    public  ResponseEntity<ApiResponse> getAllJobs(@PathVariable("jobsId") int jobsId) throws Exception {
+    @GetMapping("getJobsById/{jobsId}")
+    public  ResponseEntity<ApiResponse> getJobsById(@PathVariable("jobsId") int jobsId) throws Exception {
         var result = iManageJobService.getJobsByIdService(jobsId);
+        return ResponseEntity.ok(ApiResponse.Ok(result));
+    }
+
+    @PostMapping("manageJobs")
+    public  ResponseEntity<ApiResponse> manageJobs(@RequestBody Jobs jobs) throws Exception {
+        var result = iManageJobService.manageJobsService(jobs);
         return ResponseEntity.ok(ApiResponse.Ok(result));
     }
 }
