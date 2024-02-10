@@ -7,4 +7,5 @@ import java.util.List;
 public interface IManageJobService {
     List<Jobs> getAllJobsService();
     Jobs getJobsByIdService(int jobsId) throws Exception;
+    Jobs manageJobsService(Jobs jobs) throws Exception;
 }
