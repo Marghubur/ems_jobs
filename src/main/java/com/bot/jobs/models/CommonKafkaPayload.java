@@ -7,8 +7,8 @@ import lombok.ToString;
 @Data
 @ToString
 public class CommonKafkaPayload {
-    @JsonProperty("ServiceName")
-    private String serviceName;
+    @JsonProperty("KafkaServiceName")
+    private int kafkaServiceName;
     @JsonProperty("Message")
     private String message;
     @JsonProperty("Topic")

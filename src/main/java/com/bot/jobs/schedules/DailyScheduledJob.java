@@ -68,7 +68,7 @@ public class DailyScheduledJob {
         LOGGER.info(String.format("Record found: %s", jobs.size()));
         jobs.forEach(x -> {
             CommonKafkaPayload payload = new CommonKafkaPayload();
-            payload.setServiceName(x.getJobTypeName().toUpperCase());
+            payload.setKafkaServiceName(x.getKafkaServiceNameId());
             payload.setMessage(x.getJobsDetail());
             payload.setTopic(x.getTopicName());
             payload.setGroupId(x.getGroupId());

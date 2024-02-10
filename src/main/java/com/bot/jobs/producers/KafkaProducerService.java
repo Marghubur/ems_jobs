@@ -22,8 +22,6 @@ public class KafkaProducerService {
     public void sendMessage(CommonKafkaPayload payload) {
         LOGGER.info(String.format("Message send: %s", payload.toString()));
 
-        payload.setServiceName(payload.getServiceName().toUpperCase());
-
         Message<CommonKafkaPayload> message = MessageBuilder
                         .withPayload(payload)
                         .setHeader(KafkaHeaders.TOPIC, payload.getTopic())

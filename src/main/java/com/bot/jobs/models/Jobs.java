@@ -18,6 +18,9 @@ public class Jobs {
     @JsonProperty("JobTypeName")
     @Column(name = "JobTypeName")
     private String jobTypeName;
+    @JsonProperty("KafkaServiceNameId")
+    @Column(name = "KafkaServiceNameId")
+    private int kafkaServiceNameId;
     @JsonProperty("JobTypeDescription")
     @Column(name = "JobTypeDescription")
     private String jobTypeDescription;
