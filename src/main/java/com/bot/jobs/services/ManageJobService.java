@@ -21,12 +21,10 @@ public class ManageJobService implements IManageJobService {
     }
 
     public Jobs getJobsByIdService(int jobsId) throws Exception {
-        Jobs job = null;
-        if (jobsId > 0)
-            job = manageJobRepository.getJobsByIdRepository(jobsId);
-        else
-            job = new Jobs();
-        return job;
+        if (jobsId == 0)
+            throw new Exception("Invalid job id");
+
+        return manageJobRepository.getJobsByIdRepository(jobsId);
     }
 
     public Jobs manageJobsService(Jobs jobs) throws Exception {
@@ -65,7 +63,7 @@ public class ManageJobService implements IManageJobService {
     private void addJobDetail(Jobs jobs) throws Exception {
         java.util.Date utilDate = new java.util.Date();
         var date = new java.sql.Timestamp(utilDate.getTime());
-        int jobId = dbManager.nextIntPrimaryKey(Jobs.class) - 1;
+        int jobId = dbManager.nextIntPrimaryKey(Jobs.class);
         jobs.setJobId(jobId);
         jobs.setCreatedBy(1L);
         jobs.setJobsDetail("{}");
