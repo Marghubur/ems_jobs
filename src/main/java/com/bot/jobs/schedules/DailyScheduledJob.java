@@ -72,6 +72,10 @@ public class DailyScheduledJob {
             payload.setMessage(x.getJobsDetail());
             payload.setTopic(x.getTopicName());
             payload.setGroupId(x.getGroupId());
+            if (!x.getTemplate().isEmpty()) {
+                payload.setMessage(x.getTemplate());
+            }
+
             kafkaProducerService.sendMessage(payload);
         });
     }
