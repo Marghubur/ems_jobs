@@ -26,7 +26,7 @@ public class KafkaProducerService {
 
         Message<CommonKafkaPayload> message = MessageBuilder
                         .withPayload(payload)
-                        .setHeader(KafkaHeaders.TOPIC, "daily-jobs-manager")
+                        .setHeader(KafkaHeaders.TOPIC, payload.getTopic())
                         .build();
 
         kafkaTemplate.send(message);

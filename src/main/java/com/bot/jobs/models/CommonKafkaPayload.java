@@ -11,4 +11,8 @@ public class CommonKafkaPayload {
     private String serviceName;
     @JsonProperty("Message")
     private String message;
+    @JsonProperty("Topic")
+    private String topic;
+    @JsonProperty("GroupId")
+    private String groupId;
 }
