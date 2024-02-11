@@ -50,6 +50,7 @@ public class DailyScheduledJob {
                             boolean startDateFlag = Math.abs(duration.toDays()) >= 0;
 
                             boolean endDateFlag = true;
+                            boolean isOccurrenceFlagEnabled = false;
                             if (x.getJobEndDate() != null) {
                                 var endDate = x.getJobStartDate().toInstant()
                                         .atZone(ZoneId.of("UTC"))
@@ -59,9 +60,39 @@ public class DailyScheduledJob {
                                 endDateFlag = Math.abs(duration.toDays()) >= 0;
                             }
 
+                            switch (x.getJobOccurrenceType()) {
+                                case 1 -> {
+                                    if (x.getJobMonthOfYear() != 0 && x.getJobMonthOfYear() != currentUtcDateTime.getMonthValue()) {
+                                        break;
+                                    }
+                                    if (x.getJobDayOfMonth() != 0 && x.getJobDayOfMonth() != currentUtcDateTime.getDayOfMonth()) {
+                                        break;
+                                    }
+                                    if (x.getJobTime() == hour) {
+                                        isOccurrenceFlagEnabled = true;
+                                    }
+                                }
+                                case 2 -> {
+                                    if (x.getJobMonthOfYear() != 0 && x.getJobMonthOfYear() != currentUtcDateTime.getMonthValue()) {
+                                        break;
+                                    }
+                                    if (x.getJobDayOfWeek() == currentUtcDateTime.getDayOfWeek().getValue()) {
+                                        isOccurrenceFlagEnabled = true;
+                                    }
+                                }
+                                case 3 -> {
+                                    if (x.getJobMonthOfYear() != 0 && x.getJobMonthOfYear() != currentUtcDateTime.getMonthValue()) {
+                                        break;
+                                    }
+                                    if (x.getJobDayOfMonth() == currentUtcDateTime.getDayOfMonth()) {
+                                        isOccurrenceFlagEnabled = true;
+                                    }
+                                }
+                            }
+
                             return startDateFlag
+                                    && isOccurrenceFlagEnabled
                                     && endDateFlag
-                                    && x.getJobTime() == hour
                                     && x.isActiveJob();
                         }).toList();
 
@@ -72,7 +103,7 @@ public class DailyScheduledJob {
             payload.setMessage(x.getJobsDetail());
             payload.setTopic(x.getTopicName());
             payload.setGroupId(x.getGroupId());
-            if (!x.getTemplate().isEmpty()) {
+            if (x.getTemplate() != null && !x.getTemplate().isEmpty()) {
                 payload.setMessage(x.getTemplate());
             }
 
