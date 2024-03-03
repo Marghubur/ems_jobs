@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Component;
 
@@ -27,21 +28,25 @@ public class MasterDatabaseManager {
 
     public List<Jobs> loadJobsDetail() throws Exception {
         getDatasource();
-        String query = "select * from jobs";
-        List<Map<String, Object>> result = getTemplate().queryForList(query);
+        String query = "sp_joboccurrance_get";
+        JdbcTemplate template = getTemplate();
+        SimpleJdbcCall simpleJdbcCall = new SimpleJdbcCall(template)
+                .withProcedureName(query);
 
-        LOGGER.info("[DATABASE] Data loaded successfully");
-        List<Jobs> jobs = mapper.convertValue(result, new TypeReference<List<Jobs>>() {
-        });
-        if(jobs == null) {
+        Map<String, Object> resultSet = simpleJdbcCall.execute();
+        if (resultSet.containsKey("#result-set-1")) {
+            List<Jobs> jobs = mapper.convertValue(resultSet.get("#result-set-1"), new TypeReference<List<Jobs>>() {
+            });
+
+            LOGGER.info("[DATABASE] Data loaded successfully");
+            if(jobs.size() == 0) {
+                LOGGER.info("No job found.");
+            }
+
+            return jobs;
+        }else {
             throw new Exception("Unable to load jobs data. Please contact to admin.");
         }
-
-        if(jobs.size() == 0) {
-            LOGGER.info("No job found.");
-        }
-
-        return jobs;
     }
 
     private DriverManagerDataSource getDatasource() {

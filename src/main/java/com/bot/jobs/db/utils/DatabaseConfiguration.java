@@ -1,11 +1,13 @@
 package com.bot.jobs.db.utils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
 @Component
+@Builder
 @RequestScope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class DatabaseConfiguration {
     @JsonProperty("OrganizationCode")
