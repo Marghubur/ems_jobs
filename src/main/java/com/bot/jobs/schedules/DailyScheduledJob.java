@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +61,20 @@ public class DailyScheduledJob {
             payload.setGroupId(x.getGroupId());
             if (x.getTemplate() != null && !x.getTemplate().isEmpty()) {
                 payload.setMessage(x.getTemplate());
+            }
+
+            if (x.getKafkaServiceNameId() == 35) {
+                ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneOffset.UTC);
+
+                // Use the format method to convert Date to String
+                String dateString = String.format("%s-%s-%s %s:%s:%s",
+                        zonedDateTime.getYear(),
+                        zonedDateTime.getMonth(),
+                        x.getJobDayOfMonth(),
+                        zonedDateTime.getHour(),
+                        zonedDateTime.getMinute(),
+                        zonedDateTime.getSecond());
+                payload.setMessage("{ \"PaymentRunDate\": \" " + dateString + " \" }");
             }
 
             kafkaProducerService.sendMessage(payload);
