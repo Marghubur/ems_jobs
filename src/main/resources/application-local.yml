@@ -2,22 +2,16 @@ env:
   folder: local-environment
 
 spring:
-  config:
+  #config:
     #    activate:
     #      on-profile: default
-    import: optional:configserver:http://localhost:8083
+    #import: optional:configserver:http://localhost:8083
 
   datasource:
     driver: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://tracker.io:3308/ems_master
     username: root
     password: live@Bottomhalf_001
-
-eureka:
-  client:
-    enabled: true
-    serviceUrl:
-      defaultZone: http://localhost:8080/eureka
 
 ---
 

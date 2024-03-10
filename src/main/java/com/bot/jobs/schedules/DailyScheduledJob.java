@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,70 +52,6 @@ public class DailyScheduledJob {
         }
 
         LOGGER.info("Scheduled task executed at: " + new Date());
-
-/*        Instant currentUtcInstant = Instant.now();
-
-        // Convert to ZonedDateTime with UTC time zone
-        ZonedDateTime currentUtcDateTime = ZonedDateTime.ofInstant(currentUtcInstant, ZoneId.of("UTC"));
-
-        // Extract the hour from the UTC time
-        int hour = currentUtcDateTime.getHour();*/
-
-       /* var jobs = jobsList.stream()
-                        .filter(x  -> {
-                            var startDate = x.getJobStartDate().toInstant()
-                                    .atZone(ZoneId.of("UTC"))
-                                    .toLocalDate();
-                            Duration duration = Duration.between(currentUtcDateTime.toLocalDate().atStartOfDay(), startDate.atStartOfDay());
-                            boolean startDateFlag = Math.abs(duration.toDays()) >= 0;
-
-                            boolean endDateFlag = true;
-                            boolean isOccurrenceFlagEnabled = false;
-                            if (x.getJobEndDate() != null) {
-                                var endDate = x.getJobStartDate().toInstant()
-                                        .atZone(ZoneId.of("UTC"))
-                                        .toLocalDate();
-                                duration = Duration.between(endDate.atStartOfDay(), currentUtcDateTime.toLocalDate().atStartOfDay());
-
-                                endDateFlag = Math.abs(duration.toDays()) >= 0;
-                            }
-
-                            switch (x.getJobOccurrenceType()) {
-                                case 1 -> {
-                                    if (x.getJobMonthOfYear() != 0 && x.getJobMonthOfYear() != currentUtcDateTime.getMonthValue()) {
-                                        break;
-                                    }
-                                    if (x.getJobDayOfMonth() != 0 && x.getJobDayOfMonth() != currentUtcDateTime.getDayOfMonth()) {
-                                        break;
-                                    }
-                                    if (x.getJobTime() == hour) {
-                                        isOccurrenceFlagEnabled = true;
-                                    }
-                                }
-                                case 2 -> {
-                                    if (x.getJobMonthOfYear() != 0 && x.getJobMonthOfYear() != currentUtcDateTime.getMonthValue()) {
-                                        break;
-                                    }
-                                    if (x.getJobDayOfWeek() == currentUtcDateTime.getDayOfWeek().getValue()) {
-                                        isOccurrenceFlagEnabled = true;
-                                    }
-                                }
-                                case 3 -> {
-                                    if (x.getJobMonthOfYear() != 0 && x.getJobMonthOfYear() != currentUtcDateTime.getMonthValue()) {
-                                        break;
-                                    }
-                                    if (x.getJobDayOfMonth() == currentUtcDateTime.getDayOfMonth()) {
-                                        isOccurrenceFlagEnabled = true;
-                                    }
-                                }
-                            }
-
-                            return startDateFlag
-                                    && isOccurrenceFlagEnabled
-                                    && endDateFlag
-                                    && x.isActiveJob();
-                        }).toList();*/
-
         LOGGER.info(String.format("Record found: %s", jobsList.size()));
         jobsList.forEach(x -> {
             CommonKafkaPayload payload = new CommonKafkaPayload();
@@ -124,6 +61,20 @@ public class DailyScheduledJob {
             payload.setGroupId(x.getGroupId());
             if (x.getTemplate() != null && !x.getTemplate().isEmpty()) {
                 payload.setMessage(x.getTemplate());
+            }
+
+            if (x.getKafkaServiceNameId() == 35) {
+                ZonedDateTime zonedDateTime = ZonedDateTime.now(ZoneOffset.UTC);
+
+                // Use the format method to convert Date to String
+                String dateString = String.format("%s-%s-%s %s:%s:%s",
+                        zonedDateTime.getYear(),
+                        zonedDateTime.getMonth(),
+                        x.getJobDayOfMonth(),
+                        zonedDateTime.getHour(),
+                        zonedDateTime.getMinute(),
+                        zonedDateTime.getSecond());
+                payload.setMessage("{ \"PaymentRunDate\": \" " + dateString + " \" }");
             }
 
             kafkaProducerService.sendMessage(payload);

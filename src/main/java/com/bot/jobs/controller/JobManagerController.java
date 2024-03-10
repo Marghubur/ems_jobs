@@ -25,7 +25,7 @@ public class JobManagerController {
     }
 
     @GetMapping("getAllJobs")
-    public  ResponseEntity<ApiResponse> getAllJobs() {
+    public  ResponseEntity<ApiResponse> getAllJobs() throws Exception {
         var result = iManageJobService.getAllJobsService();
         return ResponseEntity.ok(ApiResponse.Ok(result));
     }

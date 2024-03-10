@@ -6,9 +6,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 
+@RequestScope
 @Component
-@Builder
-@RequestScope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class DatabaseConfiguration {
     @JsonProperty("OrganizationCode")
     String organizationCode;
