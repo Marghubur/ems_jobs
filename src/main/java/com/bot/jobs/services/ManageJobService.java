@@ -2,12 +2,15 @@ package com.bot.jobs.services;
 
 import com.bot.jobs.Repository.ManageJobRepository;
 import com.bot.jobs.db.service.DbManager;
+import com.bot.jobs.entitymodel.ServiceType;
 import com.bot.jobs.models.Jobs;
 import com.bot.jobs.serviceinterface.IManageJobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ManageJobService implements IManageJobService {
@@ -20,11 +23,19 @@ public class ManageJobService implements IManageJobService {
         return manageJobRepository.getAllJobRepository();
     }
 
-    public Jobs getJobsByIdService(int jobsId) throws Exception {
+    public Map<String, Object> getJobsByIdService(int jobsId) throws Exception {
         if (jobsId == 0)
             throw new Exception("Invalid job id");
 
-        return manageJobRepository.getJobsByIdRepository(jobsId);
+        Jobs job = manageJobRepository.getJobsByIdRepository(jobsId);
+
+        List<ServiceType> serviceTypes = manageJobRepository.getServiceTypes();
+        Map<String, Object> jobDetail = new HashMap<>();
+
+        jobDetail.put("ServiceType", serviceTypes);
+        jobDetail.put("Job", job);
+
+        return jobDetail;
     }
 
     public Jobs manageJobsService(Jobs jobs) throws Exception {
