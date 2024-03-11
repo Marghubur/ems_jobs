@@ -52,6 +52,9 @@ public class ManageJobService implements IManageJobService {
         if (jobs.getJobTypeName().isEmpty() || jobs.getJobTypeName() == null)
             throw new Exception("Invalid job type name");
 
+        if (jobs.getKafkaServiceNameId() == 0)
+        throw new Exception("Invalid job type name");
+
         if (jobs.getJobTypeDescription().isEmpty() || jobs.getJobTypeDescription() == null)
             throw new Exception("Invalid job type description");
 
@@ -91,6 +94,7 @@ public class ManageJobService implements IManageJobService {
 
         existingJobs.setJobTypeName(jobs.getJobTypeName());
         existingJobs.setJobTypeDescription(jobs.getJobTypeDescription());
+        existingJobs.setKafkaServiceNameId(jobs.getKafkaServiceNameId());
         existingJobs.setActiveJob(jobs.isActiveJob());
         existingJobs.setJobStartDate(jobs.getJobStartDate());
         existingJobs.setJobEndDate(jobs.getJobEndDate());
