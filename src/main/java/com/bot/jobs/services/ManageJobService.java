@@ -24,10 +24,9 @@ public class ManageJobService implements IManageJobService {
     }
 
     public Map<String, Object> getJobsByIdService(int jobsId) throws Exception {
-        if (jobsId == 0)
-            throw new Exception("Invalid job id");
-
-        Jobs job = manageJobRepository.getJobsByIdRepository(jobsId);
+        Jobs job = null;
+        if (jobsId != 0)
+            job = manageJobRepository.getJobsByIdRepository(jobsId);
 
         List<ServiceType> serviceTypes = manageJobRepository.getServiceTypes();
         Map<String, Object> jobDetail = new HashMap<>();
@@ -39,7 +38,10 @@ public class ManageJobService implements IManageJobService {
     }
 
     public Jobs manageJobsService(Jobs jobs) throws Exception {
+        jobs.setTopicName("daily-jobs-manager");
+        jobs.setGroupId("dailyJobGroup");
         validateJobDetail(jobs);
+
         if (jobs.getJobId() == 0)
             addJobDetail(jobs);
         else
@@ -53,16 +55,10 @@ public class ManageJobService implements IManageJobService {
             throw new Exception("Invalid job type name");
 
         if (jobs.getKafkaServiceNameId() == 0)
-        throw new Exception("Invalid job type name");
+            throw new Exception("Invalid job type name");
 
         if (jobs.getJobTypeDescription().isEmpty() || jobs.getJobTypeDescription() == null)
             throw new Exception("Invalid job type description");
-
-        if (jobs.getTopicName().isEmpty() || jobs.getTopicName() == null)
-            throw new Exception("Invalid topic name");
-
-        if (jobs.getGroupId().isEmpty() || jobs.getGroupId() == null)
-            throw new Exception("Invalid group type id");
 
         if (jobs.getJobOccurrenceType() == 1) {
             jobs.setJobDayOfWeek(0);
