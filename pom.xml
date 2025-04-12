@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bot.jobs</groupId>
-	<artifactId>jobs</artifactId>
+	<artifactId>Ems-svc-job</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jobs</name>
 	<description>Cron job project to manage and run jobs</description>
